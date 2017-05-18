@@ -1,6 +1,7 @@
 package com.wakarkhan.deliverydrop;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.wakarkhan.deliverydrop.fragments.HomeFragment;
 import com.wakarkhan.deliverydrop.fragments.NotificationsFragment;
@@ -22,6 +24,8 @@ import com.wakarkhan.deliverydrop.fragments.ProfileFragment;
 
 public class NavigationMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,18 @@ public class NavigationMain extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                moveTaskToBack(true);
+            }
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this,"Press BACK again to exit!",Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            },2000);
         }
     }
 
