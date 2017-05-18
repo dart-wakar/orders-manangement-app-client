@@ -2,6 +2,7 @@ package com.wakarkhan.deliverydrop;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.wakarkhan.deliverydrop.model.User;
@@ -28,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public static final String TAG = ProfileActivity.class.getSimpleName();
     public static final String BASE_URL = "http://10.0.2.2:8000/";
+    public boolean doubleBackToExitPressedOnce = false;
 
     private TextView tvFirstName;
     private TextView tvEmail;
@@ -83,6 +86,23 @@ public class ProfileActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         Snackbar.make(findViewById(R.id.activity_profile),"Error "+error.getLocalizedMessage(),Snackbar.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            moveTaskToBack(true);
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this,"Press BACK again to exit",Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        },2000);
+    }
+
 
     @Override
     protected void onDestroy() {
