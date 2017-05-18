@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.wakarkhan.deliverydrop.NavigationMain;
 import com.wakarkhan.deliverydrop.ProfileActivity;
 import com.wakarkhan.deliverydrop.R;
 import com.wakarkhan.deliverydrop.network.UserRequestInterface;
@@ -108,7 +109,7 @@ public class LoginFragment extends Fragment {
         etUsername.setText(null);
         etPassword.setText(null);
 
-        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+        Intent intent = new Intent(getActivity(), NavigationMain.class);
         startActivity(intent);
     }
 

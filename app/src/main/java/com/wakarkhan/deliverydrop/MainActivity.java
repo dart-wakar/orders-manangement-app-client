@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         if (preferences.contains("token")) {
             String token = preferences.getString("token",null);
             Log.d(TAG,token);
-            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(MainActivity.this, NavigationMain.class);
             startActivity(intent);
         } else {
             fragment = new LoginFragment();
