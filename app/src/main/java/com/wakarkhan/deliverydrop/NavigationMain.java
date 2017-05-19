@@ -1,10 +1,13 @@
 package com.wakarkhan.deliverydrop;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,22 +17,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.wakarkhan.deliverydrop.fragments.HomeFragment;
 import com.wakarkhan.deliverydrop.fragments.NotificationsFragment;
 import com.wakarkhan.deliverydrop.fragments.OrdersFragment;
 import com.wakarkhan.deliverydrop.fragments.ProfileFragment;
+import com.wakarkhan.deliverydrop.model.User;
+import com.wakarkhan.deliverydrop.network.UserRequestInterface;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NavigationMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public boolean doubleBackToExitPressedOnce = false;
+    private static final String TAG = NavigationMain.class.getSimpleName();
+    private View navHeader;
+    private TextView tv_navUsername;
+    private TextView tv_navEmail;
+    private CompositeDisposable compositeDisposable;
+    private SharedPreferences sharedPreferences;
+    private String token;
+
+    public static final String BASE_URL = "http://10.0.2.2:8000/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,7 +63,14 @@ public class NavigationMain extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        initSharedPreferences();
+        compositeDisposable = new CompositeDisposable();
+        navHeader = navigationView.getHeaderView(0);
+        tv_navUsername = (TextView) navHeader.findViewById(R.id.tv_nav_username);
+        tv_navEmail = (TextView) navHeader.findViewById(R.id.tv_nav_email);
+        loadCurrentUser();
         navigationView.setNavigationItemSelectedListener(this);
+
 
         displaySelectedScreen(R.id.nav_home);
     }
@@ -126,5 +156,40 @@ public class NavigationMain extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void initSharedPreferences() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        token = sharedPreferences.getString("token","");
+    }
+
+    private void loadCurrentUser() {
+        UserRequestInterface userRequestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(UserRequestInterface.class);
+
+        compositeDisposable.add(userRequestInterface.getCurrentUser(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse,this::handleError));
+    }
+
+    private void handleResponse(User user) {
+        Log.d(TAG,user.getUsername());
+        tv_navUsername.setText(user.getUsername());
+        tv_navEmail.setText(user.getEmail());
+    }
+
+    private void handleError(Throwable error) {
+        Toast.makeText(getBaseContext(),"Error "+error.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }
