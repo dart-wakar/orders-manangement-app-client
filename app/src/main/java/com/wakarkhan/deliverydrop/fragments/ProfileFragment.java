@@ -31,6 +31,10 @@ public class ProfileFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView tv_firstName;
     private TextView tv_email;
+    private TextView tv_username;
+    private TextView tv_lastName;
+    private TextView tv_phone;
+    private TextView tv_address;
 
     private SharedPreferences sharedPreferences;
     private CompositeDisposable compositeDisposable;
@@ -49,6 +53,10 @@ public class ProfileFragment extends Fragment {
     private void initViews(View v) {
         tv_firstName = (TextView)v.findViewById(R.id.tv_first_name);
         tv_email = (TextView)v.findViewById(R.id.tv_email);
+        tv_username = (TextView)v.findViewById(R.id.tv_username);
+        tv_lastName = (TextView)v.findViewById(R.id.tv_last_name);
+        tv_phone = (TextView)v.findViewById(R.id.tv_phone);
+        tv_address = (TextView)v.findViewById(R.id.tv_address);
         progressBar = (ProgressBar)v.findViewById(R.id.progress);
     }
 
@@ -75,6 +83,10 @@ public class ProfileFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
         tv_firstName.setText(user.getFirst_name());
         tv_email.setText(user.getEmail());
+        tv_username.setText(user.getUsername());
+        tv_lastName.setText(user.getLast_name());
+        tv_phone.setText(user.getPhone());
+        tv_address.setText(user.getAddress());
     }
 
     private void handleError(Throwable error) {

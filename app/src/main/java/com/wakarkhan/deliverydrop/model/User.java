@@ -12,6 +12,7 @@ public class User {
     private String last_name;
     private String phone;
     private String username;
+    private String address;
     private int[] orders;
 
     public void setUsername(String username) {
@@ -36,6 +37,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setOrders(int[] orders) {
@@ -64,6 +69,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public int[] getOrders() {
