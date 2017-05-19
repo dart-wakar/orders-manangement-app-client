@@ -80,7 +80,7 @@ public class RegisterFragment extends Fragment {
         btnRegister = (Button)v.findViewById(R.id.btn_register);
         progressBar = (ProgressBar)v.findViewById(R.id.progress);
 
-        btnRegister.setOnClickListener(view -> register());
+        btnRegister.setOnClickListener((View view) -> register());
         tvLogin.setOnClickListener(view -> goToLogin());
 
     }

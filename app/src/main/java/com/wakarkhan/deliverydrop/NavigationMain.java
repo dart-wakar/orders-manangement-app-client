@@ -1,5 +1,6 @@
 package com.wakarkhan.deliverydrop;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,11 +18,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.wakarkhan.deliverydrop.fragments.HomeFragment;
+import com.wakarkhan.deliverydrop.fragments.LoginFragment;
 import com.wakarkhan.deliverydrop.fragments.NotificationsFragment;
 import com.wakarkhan.deliverydrop.fragments.OrdersFragment;
 import com.wakarkhan.deliverydrop.fragments.ProfileFragment;
@@ -42,6 +45,7 @@ public class NavigationMain extends AppCompatActivity
     private View navHeader;
     private TextView tv_navUsername;
     private TextView tv_navEmail;
+    private Button btnLogout;
     private CompositeDisposable compositeDisposable;
     private SharedPreferences sharedPreferences;
     private String token;
@@ -68,10 +72,10 @@ public class NavigationMain extends AppCompatActivity
         navHeader = navigationView.getHeaderView(0);
         tv_navUsername = (TextView) navHeader.findViewById(R.id.tv_nav_username);
         tv_navEmail = (TextView) navHeader.findViewById(R.id.tv_nav_email);
+        btnLogout = (Button) navHeader.findViewById(R.id.btn_logout);
         loadCurrentUser();
+        btnLogout.setOnClickListener((View view) -> logout());
         navigationView.setNavigationItemSelectedListener(this);
-
-
         displaySelectedScreen(R.id.nav_home);
     }
 
@@ -185,6 +189,18 @@ public class NavigationMain extends AppCompatActivity
 
     private void handleError(Throwable error) {
         Toast.makeText(getBaseContext(),"Error "+error.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+    }
+
+    private void logout() {
+        Log.d(TAG,token);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear().apply();
+        loadMainActivity();
+    }
+
+    private void loadMainActivity() {
+        Intent intent = new Intent(NavigationMain.this,MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
