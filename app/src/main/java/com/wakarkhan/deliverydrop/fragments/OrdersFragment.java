@@ -35,6 +35,7 @@ public class OrdersFragment extends Fragment {
     private String token;
 
     private ProgressBar progressBar;
+    private TextView tv_noOrders;
 
     private RecyclerView recyclerView;
     private CompositeDisposable compositeDisposable;
@@ -55,6 +56,8 @@ public class OrdersFragment extends Fragment {
 
     private void initViews(View v) {
         progressBar = (ProgressBar)v.findViewById(R.id.progress);
+        tv_noOrders = (TextView)v.findViewById(R.id.tv_no_orders);
+        tv_noOrders.setVisibility(View.GONE);
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -83,6 +86,10 @@ public class OrdersFragment extends Fragment {
     private void handleResponse(List<Order> orderList) {
         progressBar.setVisibility(View.GONE);
         orderArrayList = new ArrayList<>(orderList);
+        int noOfOrders = orderArrayList.size();
+        if (noOfOrders == 0) {
+            tv_noOrders.setVisibility(View.VISIBLE);
+        }
         ordersDataAdapter = new OrdersDataAdapter(orderArrayList);
         recyclerView.setAdapter(ordersDataAdapter);
     }
