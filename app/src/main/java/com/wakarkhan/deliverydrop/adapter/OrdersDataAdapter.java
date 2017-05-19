@@ -34,7 +34,25 @@ public class OrdersDataAdapter extends RecyclerView.Adapter<OrdersDataAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tvOrder_title.setText(orderArrayList.get(position).getTitle());
         holder.tvWebsite.setText(orderArrayList.get(position).getWebsite_name());
-        //holder.tvStatus.setText(orderArrayList.get(position).getStatus());
+        int status = orderArrayList.get(position).getStatus();
+        String status_text;
+        switch (status) {
+            case 0:
+                status_text = "Order placed";
+                break;
+            case 1:
+                status_text = "Order confirmed";
+                break;
+            case 2:
+                status_text = "Order on route to delivery";
+                break;
+            case 3:
+                status_text = "Order delivered";
+                break;
+            default:
+                status_text = "Order placed";
+        }
+        holder.tvStatus.setText(status_text);
     }
 
     @Override

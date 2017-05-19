@@ -71,8 +71,8 @@ public class LoginFragment extends Fragment {
         tvRegister = (TextView)v.findViewById(R.id.tv_register);
         progressBar = (ProgressBar)v.findViewById(R.id.progress);
 
-        btnLogin.setOnClickListener(view -> login());
-        tvRegister.setOnClickListener(view -> goToRegister());
+        btnLogin.setOnClickListener((View view) -> login());
+        tvRegister.setOnClickListener((View view) -> goToRegister());
     }
 
     private void initSharedPreferences() {
