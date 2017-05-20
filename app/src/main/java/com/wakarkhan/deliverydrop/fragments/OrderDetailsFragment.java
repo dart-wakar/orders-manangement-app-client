@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,7 +95,10 @@ public class OrderDetailsFragment extends Fragment {
     }
 
     private void loadOrdersFragment() {
-
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        OrdersFragment fragment = new OrdersFragment();
+        ft.replace(R.id.content_frame,fragment,OrdersFragment.TAG);
+        ft.commit();
     }
 
     private void loadOrder() {
