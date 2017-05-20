@@ -2,8 +2,9 @@ package com.wakarkhan.deliverydrop;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             fragment = new LoginFragment();
-            getFragmentManager().beginTransaction().replace(R.id.fragment_frame,fragment,LoginFragment.TAG).commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_frame,fragment,LoginFragment.TAG);
+            ft.commit();
         }
     }
 }

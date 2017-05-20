@@ -1,11 +1,14 @@
 package com.wakarkhan.deliverydrop.model;
 
+import java.io.Serializable;
+
 /**
  * Created by wakar on 17/5/17.
  */
 
-public class User {
+public class User implements Serializable {
 
+    private int id;
     private String first_name;
     private String email;
     private String password;
@@ -45,6 +48,10 @@ public class User {
 
     public void setOrders(int[] orders) {
         this.orders = orders;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUsername() {

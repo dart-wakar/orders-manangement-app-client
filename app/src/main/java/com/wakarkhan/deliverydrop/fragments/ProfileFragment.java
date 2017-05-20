@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,8 @@ public class ProfileFragment extends Fragment {
     private TextView tv_lastName;
     private TextView tv_phone;
     private TextView tv_address;
+    private FloatingActionButton fab_profileEdit;
+    private User currentUser;
 
     private SharedPreferences sharedPreferences;
     private CompositeDisposable compositeDisposable;
@@ -44,8 +48,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         compositeDisposable = new CompositeDisposable();
-        initViews(view);
         initSharedPreferences();
+        initViews(view);
         loadProfile();
         return view;
     }
@@ -58,6 +62,22 @@ public class ProfileFragment extends Fragment {
         tv_phone = (TextView)v.findViewById(R.id.tv_phone);
         tv_address = (TextView)v.findViewById(R.id.tv_address);
         progressBar = (ProgressBar)v.findViewById(R.id.progress);
+        fab_profileEdit = (FloatingActionButton)v.findViewById(R.id.fab_profile_edit);
+
+        fab_profileEdit.setOnClickListener((View view) -> loadEditProfileFragment());
+    }
+
+    private void loadEditProfileFragment() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ProfileEditFragment fragment = new ProfileEditFragment();
+        Bundle bundle = new Bundle();
+        User usr = currentUser;
+        bundle.putSerializable("current_user",usr);
+        fragment.setArguments(bundle);
+        ft.replace(R.id.content_frame,fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     private void initSharedPreferences() {
@@ -80,6 +100,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void handleResponse(User user) {
+        currentUser = user;
         progressBar.setVisibility(View.GONE);
         tv_firstName.setText(user.getFirst_name());
         tv_email.setText(user.getEmail());

@@ -27,4 +27,7 @@ public interface UserRequestInterface {
     @GET("currentuser/")
     Observable<User> getCurrentUser(@Header("Authorization") String token);
 
+    @POST("users/edit/")
+    Observable<User> updateUser(@Body User user,@Header("Authorization") String token);
+
 }

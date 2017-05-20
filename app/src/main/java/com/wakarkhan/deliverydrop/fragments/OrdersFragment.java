@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class OrdersFragment extends Fragment {
 
     public static final String BASE_URL = "http://10.0.2.2:8000/";
+    public static final String TAG = OrdersFragment.class.getSimpleName();
     private String token;
 
     private ProgressBar progressBar;
@@ -48,8 +50,8 @@ public class OrdersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders,container,false);
         compositeDisposable = new CompositeDisposable();
-        initViews(view);
         initSharedPreferences();
+        initViews(view);
         loadOrders();
         return view;
     }
@@ -67,6 +69,7 @@ public class OrdersFragment extends Fragment {
     private void initSharedPreferences() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         token = sharedPreferences.getString("token","");
+        Log.d(TAG,token+"haha");
     }
 
     private void loadOrders() {
