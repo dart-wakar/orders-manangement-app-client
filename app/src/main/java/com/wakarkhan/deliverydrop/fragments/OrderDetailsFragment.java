@@ -1,5 +1,6 @@
 package com.wakarkhan.deliverydrop.fragments;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import java.util.Locale;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -91,7 +94,53 @@ public class OrderDetailsFragment extends Fragment {
     }
 
     private void promptOrderDelete() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        deleteOrder();
+                        dialog.dismiss();
+                        break;
 
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialog.dismiss();
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Are you sure you want to remove this order?")
+                .setPositiveButton("Delete",dialogClickListener)
+                .setNegativeButton("Cancel",dialogClickListener).show();
+    }
+
+    private void deleteOrder() {
+        OrderRequestInterface orderRequestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(OrderRequestInterface.class);
+
+        compositeDisposable.add(orderRequestInterface.deleteOrder(orderId,token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleDeleteResponse,this::handleDeleteError));
+    }
+
+    private void handleDeleteResponse(Response response) {
+        if (response.code() == 204) {
+            Toast.makeText(getContext(),"Order successfully deleted!",Toast.LENGTH_SHORT).show();
+            loadOrdersFragment();
+        } else {
+            Toast.makeText(getContext(),"Response code: " +response.code(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleDeleteError(Throwable error) {
+        Toast.makeText(getContext(),"Error "+error.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
     }
 
     private void loadOrdersFragment() {
