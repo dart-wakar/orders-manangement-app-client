@@ -1,12 +1,13 @@
 package com.wakarkhan.deliverydrop.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by wakar on 19/5/17.
  */
 
-public class Order {
+public class Order implements Serializable {
 
     private String title;
     private String website_name;

@@ -90,7 +90,16 @@ public class OrderDetailsFragment extends Fragment {
     }
 
     private void loadEditOrderFragment() {
-
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        OrderEditFragment fragment = new OrderEditFragment();
+        Bundle bundle = new Bundle();
+        Order odr = currentOrder;
+        bundle.putSerializable("current_order",odr);
+        fragment.setArguments(bundle);
+        ft.replace(R.id.content_frame,fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     private void promptOrderDelete() {

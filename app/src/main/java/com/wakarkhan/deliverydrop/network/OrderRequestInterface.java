@@ -6,6 +6,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -28,4 +29,7 @@ public interface OrderRequestInterface {
     @FormUrlEncoded
     @POST("orders/delete/")
     Observable<Response<Object>> deleteOrder(@Field("id") int orderId,@Header("Authorization") String token);
+
+    @POST("orders/edit/")
+    Observable<Order> editOrder(@Body Order order,@Header("Authorization") String token);
 }

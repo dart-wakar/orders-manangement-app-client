@@ -79,12 +79,13 @@ public class ProfileEditFragment extends Fragment {
     }
 
     private void saveProfile() {
-        currentUser.setUsername(etUsername.getText().toString());
-        currentUser.setEmail(etEmail.getText().toString());
-        currentUser.setFirst_name(etFirstName.getText().toString());
-        currentUser.setLast_name(etLastName.getText().toString());
-        currentUser.setPhone(etPhone.getText().toString());
-        currentUser.setAddress(etAddress.getText().toString());
+        User usr = currentUser;
+        usr.setUsername(etUsername.getText().toString());
+        usr.setEmail(etEmail.getText().toString());
+        usr.setFirst_name(etFirstName.getText().toString());
+        usr.setLast_name(etLastName.getText().toString());
+        usr.setPhone(etPhone.getText().toString());
+        usr.setAddress(etAddress.getText().toString());
 
         UserRequestInterface userRequestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -93,7 +94,7 @@ public class ProfileEditFragment extends Fragment {
                 .build()
                 .create(UserRequestInterface.class);
 
-        compositeDisposable.add(userRequestInterface.updateUser(currentUser,token)
+        compositeDisposable.add(userRequestInterface.updateUser(usr,token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
@@ -101,6 +102,7 @@ public class ProfileEditFragment extends Fragment {
 
     private void handleResponse(User user) {
         Toast.makeText(getContext(),"Update Successful",Toast.LENGTH_SHORT).show();
+        currentUser = user;
         goToProfile();
     }
 

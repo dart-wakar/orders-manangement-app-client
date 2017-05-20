@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ProfileFragment extends Fragment {
 
     public static final String BASE_URL = "http://10.0.2.2:8000/";
+    public static final String TAG = ProfileFragment.class.getSimpleName();
     private String token;
 
     private ProgressBar progressBar;
@@ -68,6 +70,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadEditProfileFragment() {
+        Log.d(TAG,"ggwp");
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ProfileEditFragment fragment = new ProfileEditFragment();
