@@ -1,5 +1,7 @@
 package com.wakarkhan.deliverydrop.model;
 
+import java.util.Date;
+
 /**
  * Created by wakar on 19/5/17.
  */
@@ -10,6 +12,8 @@ public class Order {
     private String website_name;
     private int status;
     private int id;
+    private Date created;
+    private Date modified;
 
     public String getTitle() {
         return title;
@@ -17,6 +21,14 @@ public class Order {
 
     public int getId() {
         return id;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public Date getModified() {
+        return modified;
     }
 
     public String getWebsite_name() {
@@ -39,4 +51,11 @@ public class Order {
         this.status = status;
     }
 
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
+    }
 }
