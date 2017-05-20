@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,6 +40,7 @@ public class OrdersFragment extends Fragment {
 
     private ProgressBar progressBar;
     private TextView tv_noOrders;
+    private FloatingActionButton fabAddOrder;
 
     private RecyclerView recyclerView;
     private CompositeDisposable compositeDisposable;
@@ -61,6 +63,8 @@ public class OrdersFragment extends Fragment {
         progressBar = (ProgressBar)v.findViewById(R.id.progress);
         tv_noOrders = (TextView)v.findViewById(R.id.tv_no_orders);
         tv_noOrders.setVisibility(View.GONE);
+        fabAddOrder = (FloatingActionButton)v.findViewById(R.id.fab_add_order);
+        fabAddOrder.setOnClickListener((View view) -> loadAddOrderFragment());
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -116,6 +120,13 @@ public class OrdersFragment extends Fragment {
     private void handleError(Throwable error) {
         progressBar.setVisibility(View.GONE);
         Toast.makeText(getContext(),"Error "+error.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+    }
+
+    private void loadAddOrderFragment() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        OrderAddFragment fragment = new OrderAddFragment();
+        ft.replace(R.id.content_frame,fragment);
+        ft.commit();
     }
 
     @Override

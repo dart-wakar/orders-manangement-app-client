@@ -32,4 +32,8 @@ public interface OrderRequestInterface {
 
     @POST("orders/edit/")
     Observable<Order> editOrder(@Body Order order,@Header("Authorization") String token);
+
+    @POST("orders/create/")
+    Observable<Order> createOrder(@Body Order order,@Header("Authorization") String token);
+
 }
