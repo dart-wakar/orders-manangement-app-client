@@ -9,9 +9,14 @@ public class Order {
     private String title;
     private String website_name;
     private int status;
+    private int id;
 
     public String getTitle() {
         return title;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getWebsite_name() {

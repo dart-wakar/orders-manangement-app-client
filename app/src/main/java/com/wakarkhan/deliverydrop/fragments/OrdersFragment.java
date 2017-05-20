@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -94,6 +95,21 @@ public class OrdersFragment extends Fragment {
             tv_noOrders.setVisibility(View.VISIBLE);
         }
         ordersDataAdapter = new OrdersDataAdapter(orderArrayList);
+        ordersDataAdapter.setOnItemClickListener(new OrdersDataAdapter.OrderClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                Log.d(TAG,"onItemClick order id: "+orderArrayList.get(position).getId());
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                OrderDetailsFragment fragment = new OrderDetailsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("orderId",orderArrayList.get(position).getId());
+                fragment.setArguments(bundle);
+                ft.replace(R.id.content_frame,fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
         recyclerView.setAdapter(ordersDataAdapter);
     }
 
