@@ -60,7 +60,7 @@ public class OrdersFragment extends Fragment {
     }
 
     private void initViews(View v) {
-        progressBar = (ProgressBar)v.findViewById(R.id.progress);
+        progressBar = (ProgressBar)v.findViewById(R.id.progress_orders);
         tv_noOrders = (TextView)v.findViewById(R.id.tv_no_orders);
         tv_noOrders.setVisibility(View.GONE);
         fabAddOrder = (FloatingActionButton)v.findViewById(R.id.fab_add_order);

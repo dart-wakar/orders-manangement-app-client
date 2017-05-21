@@ -11,7 +11,7 @@
     tools:context="com.wakarkhan.deliverydrop.fragments.OrdersFragment">
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/progress_orders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
