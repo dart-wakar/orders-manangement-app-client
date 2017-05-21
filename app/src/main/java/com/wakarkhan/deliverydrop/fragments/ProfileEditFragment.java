@@ -1,5 +1,6 @@
 package com.wakarkhan.deliverydrop.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -81,7 +82,7 @@ public class ProfileEditFragment extends Fragment {
     }
 
     private void saveProfile() {
-        //hidekeyboard(getContext());
+        hidekeyboard(getContext());
         User usr = currentUser;
         usr.setUsername(etUsername.getText().toString());
         usr.setEmail(etEmail.getText().toString());
@@ -114,13 +115,17 @@ public class ProfileEditFragment extends Fragment {
     }
 
     private void cancelSave() {
-        //hidekeyboard(getContext());
+        hidekeyboard(getContext());
         goToProfile();
     }
 
-    /*private void hidekeyboard(Context ctx) {
-        InputMethodManager inputMethodManager = (InputMethodManager)ctx
-    }*/
+    private void hidekeyboard(Context ctx) {
+        InputMethodManager inputMethodManager = (InputMethodManager)ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+        View v = ((Activity)ctx).getCurrentFocus();
+        if (v == null)
+            return;
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),0);
+    }
 
     private void goToProfile() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();

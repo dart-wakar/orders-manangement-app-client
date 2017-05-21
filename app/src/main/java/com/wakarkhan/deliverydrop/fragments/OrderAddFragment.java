@@ -1,5 +1,7 @@
 package com.wakarkhan.deliverydrop.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -65,6 +68,7 @@ public class OrderAddFragment extends Fragment {
     }
 
     private void createOrder() {
+        hidekeyboard(getContext());
         Order order = new Order();
         order.setTitle(etTitle.getText().toString());
         order.setWebsite_name(etWebsite.getText().toString());
@@ -101,7 +105,16 @@ public class OrderAddFragment extends Fragment {
     }
 
     private void cancelCreate() {
+        hidekeyboard(getContext());
         loadOrdersFragment();
+    }
+
+    private void hidekeyboard(Context ctx) {
+        InputMethodManager inputMethodManager = (InputMethodManager)ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+        View v = ((Activity)ctx).getCurrentFocus();
+        if (v == null)
+            return;
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),0);
     }
 
     @Override
