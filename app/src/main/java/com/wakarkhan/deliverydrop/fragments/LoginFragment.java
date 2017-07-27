@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.wakarkhan.deliverydrop.NavigationMain;
 import com.wakarkhan.deliverydrop.ProfileActivity;
@@ -48,6 +49,7 @@ public class LoginFragment extends Fragment {
     private Button btnLogin;
     private TextView tvRegister;
     private ProgressBar progressBar;
+    private LottieAnimationView lottieAnimationView;
 
     private CompositeDisposable compositeDisposable;
     private SharedPreferences sharedPreferences;
@@ -69,7 +71,9 @@ public class LoginFragment extends Fragment {
         tiPassword = (TextInputLayout)v.findViewById(R.id.ti_password);
         btnLogin = (Button)v.findViewById(R.id.btn_login);
         tvRegister = (TextView)v.findViewById(R.id.tv_register);
-        progressBar = (ProgressBar)v.findViewById(R.id.progress);
+        //progressBar = (ProgressBar)v.findViewById(R.id.progress);
+        lottieAnimationView = (LottieAnimationView)v.findViewById(R.id.animation_view);
+        lottieAnimationView.setVisibility(View.GONE);
 
         btnLogin.setOnClickListener((View view) -> login());
         tvRegister.setOnClickListener((View view) -> goToRegister());
@@ -83,7 +87,8 @@ public class LoginFragment extends Fragment {
         String username = etUsername.getText().toString();
         String password = etPassword.getText().toString();
         loginProcess(username,password);
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+        lottieAnimationView.setVisibility(View.VISIBLE);
     }
 
     private void loginProcess(String username,String password) {
@@ -101,7 +106,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void handleResponse(Auth auth) {
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
+        lottieAnimationView.setVisibility(View.GONE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String token = auth.getToken();
         editor.putString("token","Token "+token);
@@ -114,7 +120,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void handleError(Throwable error) {
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
+        lottieAnimationView.setVisibility(View.GONE);
         Snackbar.make(getView(),"Error "+error.getLocalizedMessage(),Snackbar.LENGTH_SHORT).show();
     }
 

@@ -75,7 +75,17 @@
                 android:text="Register"
                 android:textAlignment="center" />
 
-            <ProgressBar
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:lottie_fileName="loading.json"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true"
+                app:lottie_colorFilter="@color/colorAccent"/>
+
+            <!--<ProgressBar
                 android:id="@+id/progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,7 +93,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
-                android:visibility="gone" />
+                android:visibility="gone" />-->
 
         </RelativeLayout>
 
